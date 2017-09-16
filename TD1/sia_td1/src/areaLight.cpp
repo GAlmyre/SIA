@@ -38,7 +38,10 @@ Color3f AreaLight::intensity(const Point3f &x, const Point3f &y) const {
     float d2 = dir.squaredNorm();
     Color3f intensity = m_intensity / d2;
     if(m_texture) {
-      intensity *= (*m_texture)();
+      Vector3f p = y-position();
+      double  u = (m_texture->rows()*(1+p.dot(uVec())))/2;
+      double v = (m_texture->cols()*(1+p.dot(vVec())))/2;
+      intensity*=(*m_texture)(u,v);
     }
     return std::max(0.f,dir.normalized().dot(direction())) * intensity;
 }
