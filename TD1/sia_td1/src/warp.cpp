@@ -28,25 +28,45 @@ float Warp::squareToUniformSquarePdf(const Point2f &sample) {
 }
 
 Point2f Warp::squareToUniformDisk(const Point2f &sample) {
-    throw RTException("Warp::squareToUniformDisk() is not yet implemented!");
+  double r = sqrt(sample.x());
+  double phi = 2*M_PI*sample.y();
+
+  double x = r*cos(phi);
+  double y = r*sin(phi);
+
+  return Point2f(x,y);
 }
 
 float Warp::squareToUniformDiskPdf(const Point2f &p) {
-    throw RTException("Warp::squareToUniformDiskPdf() is not yet implemented!");
+  double r = sqrt(p.x()*p.x()+p.y()*p.y());
+
+  return ((r >= 0) && (r <= 1)) ? 1.0f/M_PI : 0.0f;
 }
 
 Vector3f Warp::squareToUniformHemisphere(const Point2f &sample) {
-    throw RTException("Warp::squareToUniformHemisphere() is not yet implemented!");
+  double phi = 2*M_PI*sample.x();
+  double theta = acos(sample.y());
+
+  return Vector3f(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
 }
 
 float Warp::squareToUniformHemispherePdf(const Vector3f &v) {
-    throw RTException("Warp::squareToUniformHemispherePdf() is not yet implemented!");
+  double norme = v.norm();
+  double theta = acos(v.z());
+
+  return ((norme - 1.f < Epsilon) && (theta >= -M_PI/2 && theta <= M_PI/2)) ? 1./(2*M_PI) : 0.0f;
 }
 
 Vector3f Warp::squareToCosineHemisphere(const Point2f &sample) {
-    throw RTException("Warp::squareToCosineHemisphere() is not yet implemented!");
+    double phi = 2*M_PI*sample.x();
+    double theta = acos(sqrt(1-sample.y()));
+
+    return Vector3f(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
 }
 
 float Warp::squareToCosineHemispherePdf(const Vector3f &v) {
-    throw RTException("Warp::squareToCosineHemispherePdf() is not yet implemented!");
+  double norme = v.norm();
+  double theta = acos(v.z());
+
+  return ((norme - 1.f < Epsilon) && (theta >= -M_PI/2 && theta <= M_PI/2)) ? 1./(2*M_PI) : 0.0f;
 }
