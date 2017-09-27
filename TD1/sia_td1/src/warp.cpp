@@ -68,5 +68,5 @@ float Warp::squareToCosineHemispherePdf(const Vector3f &v) {
   double norme = v.norm();
   double theta = acos(v.z());
 
-  return ((norme - 1.f < Epsilon) && (theta >= -M_PI/2 && theta <= M_PI/2)) ? 1./(2*M_PI) : 0.0f;
+  return ((norme - 1.f < Epsilon) && (theta >= -M_PI/2 && theta <= M_PI/2)) ? cos(theta)*(1./M_PI) : 0.0f;
 }
